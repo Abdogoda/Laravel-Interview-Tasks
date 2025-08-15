@@ -42,21 +42,28 @@ laravel-interview-tasks/
 Step	Action
 
 1️⃣	Clone this repository
+
 2️⃣	Navigate to the task folder you want to run
+
 3️⃣	Install dependencies with composer install
-4️⃣	Copy .env.example to .env and configure your database
-5️⃣	Run migrations with php artisan migrate --seed
-6️⃣	Start the Laravel server with php artisan serve
+
+4️⃣	Copy '.env.example' to '.env' and configure your database
+
+5️⃣	Run migrations with `php artisan migrate --seed`
+
+6️⃣	Start the Laravel server with `php artisan serve`
 
 
 Example:
 
-git clone https://github.com/your-username/laravel-interview-tasks.git
-cd laravel-interview-tasks/task-1-name
+```bash
+git clone https://github.com/Abdogoda/Laravel-Interview-Tasks.git
+cd Laravel-Interview-Tasks/task-1-name
 composer install
 cp .env.example .env
 php artisan migrate --seed
 php artisan serve
+```
 
 
 ---
