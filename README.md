@@ -79,18 +79,6 @@ MySQL or another Laravel-supported database
 Node.js (optional, if a task has frontend assets)
 
 
-
----
-
-📜 Available Tasks
-
-Task Folder	Short Description
-
-RBAC: Role based access control api system.	
-...	More tasks coming soon
-
-
-
 ---
 
 🌟 What You Will Gain
