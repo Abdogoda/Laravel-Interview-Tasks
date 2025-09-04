@@ -13,6 +13,33 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <style>
+      .animate-fadeIn {
+        animation: fadeIn 0.8s ease-in;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .animate-modal {
+        animation: modalIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      @keyframes modalIn {
+        from {
+          transform: scale(0.95);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    </style>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -32,5 +59,17 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <script>
+            // Modal utility functions
+      function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.remove("hidden");
+      }
+      function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.add("hidden");
+      }
+        </script>
     </body>
 </html>
