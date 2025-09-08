@@ -1,9 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between flex-wrap items-center gap-4">
-          <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Tasks') }}
-        </h2>
+          <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Tasks</h2>
         <button
               class="px-6 py-2 bg-indigo-600 text-white rounded-xl shadow-lg hover:bg-indigo-700 transition font-semibold"
               onclick="openModal('addTaskModal')"
@@ -27,10 +25,10 @@
                       name="status"
                       class="pl-10 pr-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                     >
-                      <option value="all">Status: All</option>
-                      <option value="completed">Completed</option>
-                      <option value="pending">Pending</option>
-                      <option value="overdue">Overdue</option>
+                      <option value="">Status: All</option>
+                      <option {{request()->status == 'completed' ? 'selected' : ''}} value="completed">Completed</option>
+                      <option {{request()->status == 'pending' ? 'selected' : ''}} value="pending">Pending</option>
+                      <option {{request()->status == 'in_progress' ? 'selected' : ''}} value="in_progress">In Progress</option>
                     </select>
                     <span class="absolute left-3 top-2.5 text-indigo-400">
                       <svg
@@ -54,10 +52,10 @@
                       name="category"
                       class="pl-10 pr-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                     >
-                      <option value="all">Category: All</option>
-                      <option value="work">Work</option>
-                      <option value="personal">Personal</option>
-                      <option value="shopping">Shopping</option>
+                      <option value="">Category: All</option>
+                      @foreach ($categories as $item)
+                          <option {{request()->category == $item->id ? 'selected' : ''}} value="{{ $item->id }}">{{ $item->name }}</option>
+                      @endforeach
                     </select>
                     <span class="absolute left-3 top-2.5 text-indigo-400">
                       <svg
@@ -79,14 +77,14 @@
                   </div>
                   <div class="relative">
                     <select
-                      name="sort"
+                      name="sort_by"
                       class="pl-10 pr-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                     >
                       <option value="">Sort by...</option>
-                      <option value="due_asc">Due Date ↑</option>
-                      <option value="due_desc">Due Date ↓</option>
-                      <option value="status_asc">Status ↑</option>
-                      <option value="status_desc">Status ↓</option>
+                      <option {{request()->has('sort_by') && request()->sort_by == 'due_asc' ? 'selected' : ''}} value="due_asc">Due Date ↑</option>
+                      <option {{request()->has('sort_by') && request()->sort_by == 'due_desc' ? 'selected' : ''}} value="due_desc">Due Date ↓</option>
+                      <option {{request()->has('sort_by') && request()->sort_by == 'status_asc' ? 'selected' : ''}} value="status_asc">Status ↑</option>
+                      <option {{request()->has('sort_by') && request()->sort_by == 'status_desc' ? 'selected' : ''}} value="status_desc">Status ↓</option>
                     </select>
                     <span class="absolute left-3 top-2.5 text-indigo-400">
                       <svg
@@ -113,6 +111,7 @@
                       id="trashedCheckbox"
                       name="trashed"
                       class="peer sr-only"
+                      {{ request()->has('trashed') && request()->trashed == 'on' ? 'checked' : '' }}
                     />
                     <span
                       class="px-4 py-2 rounded-xl border-2 font-semibold shadow transition border-red-400 text-red-400 bg-transparent peer-checked:bg-red-900 peer-checked:text-white peer-checked:border-red-900"
@@ -125,6 +124,7 @@
                       type="text"
                       name="search"
                       placeholder="Search tasks..."
+                      value="{{ request()->search ?? '' }}"
                       class="pl-10 pr-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
                     />
                     <span class="absolute left-3 top-2.5 text-indigo-400">
@@ -150,6 +150,11 @@
                   >
                     Apply
                   </button>
+                  @if (request()->hasAny(['trashed', 'search', 'status', 'category', 'sort']))
+                      <button type="button" onclick="window.location='{{ request()->url() }}'" class="px-4 py-2 rounded-xl bg-gray-600 text-white font-semibold shadow hover:bg-gray-700 transition flex items-center gap-1">
+                        Clear Filters
+                      </button>
+                  @endif
                 </form>
               </div>
               <div class="bg-gray-800 shadow-lg overflow-x-auto">
@@ -177,104 +182,58 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="border-b border-gray-700">
-                      <td class="py-3 px-4 text-white">Finish project</td>
-                      <td class="py-3 px-4 truncate max-w-xs text-gray-400">
-                        Complete the frontend and backend for the todo list app.
-                      </td>
-                      <td class="py-3 px-4 text-white">Work</td>
-                      <td class="py-3 px-4 text-white">2025-09-10</td>
-                      <td class="py-3 px-4">
-                        <span
-                          class="px-3 py-1 rounded-xl bg-emerald-900 text-emerald-300 font-semibold"
-                          >Completed</span
-                        >
-                      </td>
-                      <td class="py-3 px-4 flex gap-2">
-                        <button
-                          class="px-3 py-1 bg-indigo-900 text-indigo-300 rounded-xl hover:bg-indigo-700 transition editTaskBtn"
-                          onclick="openModal('editTaskModal')"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          class="px-3 py-1 bg-red-900 text-red-300 rounded-xl hover:bg-red-700 transition deleteTaskBtn"
-                          onclick="openModal('deleteModal')"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                    <tr class="border-b border-gray-700">
-                      <td class="py-3 px-4 text-white">Buy groceries</td>
-                      <td class="py-3 px-4 truncate max-w-xs text-gray-400">
-                        Milk, eggs, bread, and fruits.
-                      </td>
-                      <td class="py-3 px-4 text-white">Shopping</td>
-                      <td class="py-3 px-4 text-white">2025-09-06</td>
-                      <td class="py-3 px-4">
-                        <span
-                          class="px-3 py-1 rounded-xl bg-yellow-900 text-yellow-300 font-semibold"
-                          >Pending</span
-                        >
-                      </td>
-                      <td class="py-3 px-4 flex gap-2">
-                        <button
-                          class="px-3 py-1 bg-indigo-900 text-indigo-300 rounded-xl hover:bg-indigo-700 transition editTaskBtn"
-                          onclick="openModal('editTaskModal')"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          class="px-3 py-1 bg-red-900 text-red-300 rounded-xl hover:bg-red-700 transition deleteTaskBtn"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="py-3 px-4 text-white">Pay bills</td>
-                      <td class="py-3 px-4 truncate max-w-xs text-gray-400">
-                        Electricity and internet bills for September.
-                      </td>
-                      <td class="py-3 px-4 text-white">Personal</td>
-                      <td class="py-3 px-4 text-white">2025-09-05</td>
-                      <td class="py-3 px-4">
-                        <span
-                          class="px-3 py-1 rounded-xl bg-red-900 text-red-300 font-semibold"
-                          >Overdue</span
-                        >
-                      </td>
-                      <td class="py-3 px-4 flex gap-2">
-                        <button
-                          class="px-3 py-1 bg-indigo-900 text-indigo-300 rounded-xl hover:bg-indigo-700 transition editTaskBtn"
-                          onclick="openModal('editTaskModal')"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          class="px-3 py-1 bg-red-900 text-red-300 rounded-xl hover:bg-red-700 transition deleteTaskBtn"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
+                    @foreach ($tasks as $item)
+                        <tr class="border-b border-gray-700">
+                          <td class="py-3 px-4 text-white">{{$item->title}}</td>
+                          <td class="py-3 px-4 truncate max-w-xs text-gray-400">
+                            {{$item->description}}
+                          </td>
+                          <td class="py-3 px-4 text-white" style="background-color: {{$item->category->color}}">{!! $item->category->icon !!} {{$item->category->name}}</td>
+                          <td class="py-3 px-4 text-{{$item->isOverdue() ? 'red-500' : 'white'}}">{{\Carbon\Carbon::parse($item->due_date)->format('Y-m-d h:i A')}}</td>
+                          <td class="py-3 px-4">
+                            <span
+                              class="inline-flex items-center gap-2 px-3 py-1 rounded-xl text-white font-semibold capitalize"
+                              style="background-color: {{$item->getTaskColor()}}"
+                              >
+                              {!! $item->getTaskIcon() !!}
+                              {{str_replace('_', ' ', $item->status)}} </span
+                            >
+                          </td>
+                          <td class="py-3 px-4 flex gap-2">
+                            @if ($item->deleted_at)
+                                <button
+                                  class="px-3 py-1 bg-green-900 text-green-300 rounded-xl hover:bg-green-700 transition restoreTaskBtn"
+                                  onclick="openRestoreModal({{ $item->id }})"
+                                >
+                                  Restore
+                                </button>
+                                <button
+                                  class="px-3 py-1 bg-red-900 text-red-300 rounded-xl hover:bg-red-700 transition deletePermanentTaskBtn"
+                                  onclick="openDeletePermanentModal({{ $item->id }})"
+                                >
+                                  Delete Permanent
+                                </button>
+                            @else
+                                <button
+                                  class="px-3 py-1 bg-indigo-900 text-indigo-300 rounded-xl hover:bg-indigo-700 transition editTaskBtn"
+                                  onclick="openEditModal({{ $item->id }}, '{{ $item->title }}', '{{ $item->description }}', {{ $item->category_id }}, '{{ $item->status }}', '{{ $item->due_date }}')"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  class="px-3 py-1 bg-red-900 text-red-300 rounded-xl hover:bg-red-700 transition deleteTaskBtn"
+                                  onclick="openDeleteModal({{ $item->id }})"
+                                >
+                                  Delete
+                                </button>
+                            @endif
+                          </td>
+                        </tr>
+                    @endforeach
                   </tbody>
                 </table>
                 <div class="flex justify-end items-center gap-2 p-4">
-                  <button
-                    class="px-3 py-1 rounded-xl bg-gray-900 text-gray-400 hover:bg-gray-800 transition"
-                  >
-                    Prev
-                  </button>
-                  <span class="px-3 py-1 rounded-xl bg-gray-900 text-indigo-300"
-                    >1</span
-                  >
-                  <button
-                    class="px-3 py-1 rounded-xl bg-gray-900 text-gray-400 hover:bg-gray-800 transition"
-                  >
-                    Next
-                  </button>
+                  {{ $tasks->links('pagination::custom') }}
                 </div>
               </div>
             </div>
@@ -289,7 +248,8 @@
         class="bg-gray-800 rounded-2xl shadow-xl p-8 animate-modal w-full max-w-md text-center"
       >
         <h3 class="text-xl font-bold text-indigo-400 mb-4">Add Task</h3>
-        <form class="space-y-4">
+        <form method="post" action="{{ route('tasks.store') }}" class="space-y-4">
+          @csrf
           <div class="text-left">
             <label
               for="addTaskTitle"
@@ -299,6 +259,7 @@
             <input
               id="addTaskTitle"
               type="text"
+              name="title"
               placeholder="Title"
               class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             />
@@ -311,6 +272,7 @@
             >
             <textarea
               id="addTaskDesc"
+              name="description"
               placeholder="Description"
               class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             ></textarea>
@@ -323,11 +285,12 @@
             >
             <select
               id="addTaskCategory"
+              name="category_id"
               class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             >
-              <option>Work</option>
-              <option>Personal</option>
-              <option>Shopping</option>
+              @foreach ($categories as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+              @endforeach
             </select>
           </div>
           <div class="text-left">
@@ -338,11 +301,12 @@
             >
             <select
               id="addTaskStatus"
+              name="status"
               class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             >
-              <option>Completed</option>
-              <option>Pending</option>
-              <option>Overdue</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
             </select>
           </div>
           <div class="text-left">
@@ -353,7 +317,8 @@
             >
             <input
               id="addTaskDue"
-              type="date"
+              type="datetime-local"
+              name="due_date"
               class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             />
           </div>
@@ -385,7 +350,9 @@
         class="bg-gray-800 rounded-2xl shadow-xl p-8 animate-modal w-full max-w-md text-center"
       >
         <h3 class="text-xl font-bold text-indigo-400 mb-4">Edit Task</h3>
-        <form class="space-y-4">
+        <form method="post" class="space-y-4" id="editTaskForm">
+          @csrf
+          @method('PUT')
           <div class="text-left">
             <label
               for="editTaskTitle"
@@ -395,6 +362,7 @@
             <input
               id="editTaskTitle"
               type="text"
+              name="title"
               placeholder="Title"
               class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             />
@@ -407,6 +375,7 @@
             >
             <textarea
               id="editTaskDesc"
+              name="description"
               placeholder="Description"
               class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             ></textarea>
@@ -419,11 +388,12 @@
             >
             <select
               id="editTaskCategory"
+              name="category_id"
               class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             >
-              <option>Work</option>
-              <option>Personal</option>
-              <option>Shopping</option>
+              @foreach ($categories as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+              @endforeach
             </select>
           </div>
           <div class="text-left">
@@ -434,11 +404,12 @@
             >
             <select
               id="editTaskStatus"
+              name="status"
               class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             >
-              <option>Completed</option>
-              <option>Pending</option>
-              <option>Overdue</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
             </select>
           </div>
           <div class="text-left">
@@ -449,7 +420,8 @@
             >
             <input
               id="editTaskDue"
-              type="date"
+              type="datetime-local"
+              name="due_date"
               class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
             />
           </div>
@@ -471,14 +443,19 @@
         </form>
       </div>
     </div>
+    
     <!-- Delete Modal -->
     <div
       id="deleteModal"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden"
     >
-      <div
+      <form 
+        method="post"
+        id="deleteTaskForm" 
         class="bg-gray-800 rounded-2xl shadow-xl p-8 animate-modal w-full max-w-sm text-center"
       >
+      @csrf
+      @method('DELETE')
         <h3 class="text-xl font-bold text-red-400 mb-4">Delete Task?</h3>
         <p class="text-gray-300 mb-6">
           Are you sure you want to delete this task?
@@ -496,6 +473,100 @@
             Cancel
           </button>
         </div>
-      </div>
+      </form>
     </div>
+    
+    <!-- Restore Modal -->
+    <div
+      id="restoreModal"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden"
+    >
+      <form 
+        method="post"
+        id="restoreTaskForm" 
+        class="bg-gray-800 rounded-2xl shadow-xl p-8 animate-modal w-full max-w-sm text-center"
+      >
+      @csrf
+        <h3 class="text-xl font-bold text-green-400 mb-4">Restore Task?</h3>
+        <p class="text-gray-300 mb-6">
+          Are you sure you want to restore this task?
+        </p>
+        <div class="flex gap-2 justify-center">
+          <button
+            class="px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition font-semibold"
+          >
+            Restore
+          </button>
+          <button
+            class="px-6 py-2 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-600 transition font-semibold"
+            onclick="closeModal('restoreModal')"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Delete Permanent Modal -->
+    <div
+      id="deletePermanentModal"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden"
+    >
+      <form 
+        method="post"
+        id="deletePermanentTaskForm" 
+        class="bg-gray-800 rounded-2xl shadow-xl p-8 animate-modal w-full max-w-sm text-center"
+      >
+      @csrf
+      @method('DELETE')
+        <h3 class="text-xl font-bold text-red-400 mb-4">Delete Permanently?</h3>
+        <p class="text-gray-300 mb-6">
+          Are you sure you want to permanently delete this task? This action cannot be undone.
+        </p>
+        <div class="flex gap-2 justify-center">
+          <button
+          type="submit"
+            class="px-6 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition font-semibold"
+          >
+            Delete Permanent
+          </button>
+          <button
+            type="button"
+            class="px-6 py-2 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-600 transition font-semibold"
+            onclick="closeModal('deletePermanentModal')"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  
+
+<script>
+  function openEditModal(id, title, description, categoryId, status, dueDate) {
+    document.getElementById('editTaskTitle').value = title;
+    document.getElementById('editTaskDesc').value = description;
+    document.getElementById('editTaskCategory').value = categoryId;
+    document.getElementById('editTaskStatus').value = status;
+    document.getElementById('editTaskDue').value = dueDate;
+    document.getElementById('editTaskForm').action = 'tasks/' + id;
+
+    openModal('editTaskModal');
+  }
+
+  function openDeleteModal(id) {
+    document.getElementById('deleteTaskForm').action = 'tasks/' + id;
+    openModal('deleteModal');
+  }
+
+  function openRestoreModal(id) {
+    document.getElementById('restoreTaskForm').action = 'tasks/' + id + '/restore';
+    openModal('restoreModal');
+  }
+
+  function openDeletePermanentModal(id) {
+    document.getElementById('deletePermanentTaskForm').action = 'tasks/' + id + '/force-delete';
+    openModal('deletePermanentModal');
+  }
+</script>
 </x-app-layout>
