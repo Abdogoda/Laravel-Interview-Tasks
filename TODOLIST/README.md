@@ -1,139 +1,141 @@
+# ✅ Todo List & Category Management
 
-# Laravel Todo List Application
-
-## Overview
-This is a full-featured Todo List web application built with Laravel 12, featuring user authentication, task and category management, filtering, sorting, soft deletes, and a modern UI using Tailwind CSS and Alpine.js.
+Welcome to the **Todo List & Category Management** documentation! This guide covers the features, routes, setup, and code structure for this Laravel application, following a modern, user-friendly approach.
 
 ---
 
-## Table of Contents
-- [Features](#features)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Code Structure](#code-structure)
-- [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
+## 🧩 Features
+- **User Authentication**: Login, registration, profile management.
+- **Task Management**: Create, update, delete, restore, and permanently delete tasks.
+- **Category Management**: Create, update, delete categories with custom colors and icons.
+- **Filtering & Sorting**: Filter tasks by status, category, search, and sort by due date or status.
+- **Dashboard**: View statistics for tasks and categories.
+- **Soft Deletes**: Restore or permanently delete tasks.
+- **Responsive UI**: Built with Tailwind CSS and Alpine.js.
 
 ---
 
-## Features
-- User authentication (login, registration, profile management)
-- Create, update, delete, restore, and permanently delete tasks
-- Categorize tasks with custom colors and icons (SVG/emoji)
-- Filter and sort tasks by status, category, due date, and more
-- Soft delete and restore for tasks
-- Dashboard with statistics (total, completed, pending, overdue tasks, total categories)
-- Responsive, modern UI with Tailwind CSS and Alpine.js
+## 🛣️ Web Routes
+
+| **Method** | **Route**                        | **Controller Method**                | **Description**                          | **Access Control** |
+|------------|-----------------------------------|--------------------------------------|------------------------------------------|-------------------|
+| GET        | `/`                               | `Anonymous`                          | Welcome page                             | Public            |
+| GET        | `/dashboard`                     | `DashboardController@index`           | Dashboard statistics                     | Authenticated     |
+| GET        | `/tasks`                         | `TaskController@index`                | List/filter/sort tasks                   | Authenticated     |
+| POST       | `/tasks`                         | `TaskController@store`                | Create a new task                        | Authenticated     |
+| PUT/PATCH  | `/tasks/{task}`                  | `TaskController@update`               | Update a task                            | Authenticated     |
+| DELETE     | `/tasks/{task}`                  | `TaskController@destroy`              | Soft delete a task                       | Authenticated     |
+| POST       | `/tasks/{task}/restore`          | `TaskController@restore`              | Restore a soft-deleted task              | Authenticated     |
+| DELETE     | `/tasks/{task}/force-delete`     | `TaskController@forceDelete`          | Permanently delete a task                | Authenticated     |
+| GET        | `/categories`                    | `CategoryController@index`            | List categories                          | Authenticated     |
+| POST       | `/categories`                    | `CategoryController@store`            | Create a new category                    | Authenticated     |
+| PUT/PATCH  | `/categories/{category}`         | `CategoryController@update`           | Update a category                        | Authenticated     |
+| DELETE     | `/categories/{category}`         | `CategoryController@destroy`          | Delete a category                        | Authenticated     |
+| GET        | `/profile`                       | `ProfileController@edit`              | Edit user profile                        | Authenticated     |
+| PATCH      | `/profile`                       | `ProfileController@update`            | Update user profile                      | Authenticated     |
+| DELETE     | `/profile`                       | `ProfileController@destroy`           | Delete user account                      | Authenticated     |
 
 ---
 
-## Installation
+## 🗂️ Project Structure
+```
+TODOLIST/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── CategoryController.php
+│   │   │   ├── DashboardController.php
+│   │   │   ├── ProfileController.php
+│   │   │   ├── TaskController.php
+│   ├── Models/
+│   │   ├── Category.php
+│   │   ├── Task.php
+│   │   ├── User.php
+│   ├── Policies/
+│   ├── Providers/
+├── database/
+│   ├── migrations/
+│   │   ├── 0001_01_01_000000_create_users_table.php
+│   │   ├── 2025_09_04_131023_create_categories_table.php
+│   │   ├── 2025_09_04_131045_create_tasks_table.php
+│   ├── seeders/
+│   │   ├── CategorySeeder.php
+│   │   ├── TaskSeeder.php
+│   │   ├── DatabaseSeeder.php
+├── resources/
+│   ├── views/
+│   │   ├── dashboard.blade.php
+│   │   ├── pages/
+│   │   │   ├── tasks.blade.php
+│   │   │   ├── categories.blade.php
+├── routes/
+│   ├── web.php
+│   ├── auth.php
+├── tests/
+│   ├── Feature/
+│   ├── Unit/
+├── README.md
+├── composer.json
+├── package.json
+├── phpunit.xml
+└── ...
+```
+---
 
-### Prerequisites
-- PHP >= 8.2
-- Composer
-- Node.js & npm
+## 🛠️ Setup and Installation
+To get started with this system, follow these installation steps:
 
-### Steps
-1. **Clone the repository:**
-	```bash
-	git clone <your-repo-url>
-	cd Laravel-Interview-Tasks/TODOLIST
-	```
-2. **Install PHP dependencies:**
-	```bash
-	composer install
-	```
-3. **Install JS dependencies:**
-	```bash
-	npm install
-	```
-4. **Copy environment file and set app key:**
-	```bash
-	cp .env.example .env
-	php artisan key:generate
-	```
-5. **Configure your database in `.env`**
-	(Default uses SQLite for testing)
-6. **Run migrations and seeders:**
-	```bash
-	php artisan migrate --seed
-	```
-7. **Build frontend assets:**
-	```bash
-	npm run build
-	```
-8. **Start the development server:**
-	```bash
-	php artisan serve
-	```
+### 1. Clone the repository:
+```bash
+git clone https://github.com/Abdogoda/Laravel-Interview-Tasks
+cd Laravel-Interview-Tasks/TODOLIST
+```
+
+### 2. Install dependencies:
+```bash
+composer install
+npm install
+```
+
+### 3. Set up the `.env` file:
+Make sure you have the correct environment variables set in your `.env` file, especially the database connection.
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+### 4. Migrate the database:
+Run the migration commands to set up the necessary tables for users, categories, and tasks.
+
+```bash
+php artisan migrate --seed
+```
+
+### 5. Build frontend assets:
+```bash
+npm run build
+```
+
+### 6. Serve the application:
+```bash
+php artisan serve
+```
 
 ---
 
-## Configuration
-- **Database:** Edit `.env` to set your preferred database (MySQL, SQLite, etc.)
-- **Mail, Cache, Queue:** Configure as needed in `config/` and `.env`
-- **Frontend:** Tailwind CSS and Vite are used for asset compilation. See `tailwind.config.js` and `vite.config.js`.
+## 🔧 Development Tools
+
+- **Laravel 12**: PHP framework for building the application.
+- **Tailwind CSS**: Utility-first CSS framework for UI.
+- **Alpine.js**: Lightweight JS framework for interactivity.
+- **Pest & PHPUnit**: For testing.
+- **SQLite/MySQL**: Database support.
 
 ---
 
-## Usage
-- Register/login to access the dashboard
-- Add, edit, delete, restore, and permanently delete tasks
-- Create and manage categories with custom colors and icons
-- Filter and sort tasks using the UI controls
-- View dashboard statistics
+## 🔗 Connect & Follow  
+- **GitHub:** [@Abdogoda](https://github.com/Abdogoda)  
+- **YouTube:** [@Abdulrhman-Goda](https://www.youtube.com/@Abdulrhman-Goda)
 
----
-
-## Code Structure
-
-### Models
-- `User`: Authenticates users, relates to tasks
-- `Task`: Belongs to a user and category, supports soft deletes, status, due date, color/icon helpers
-- `Category`: Has many tasks, supports custom color/icon
-
-### Controllers
-- `DashboardController`: Shows dashboard stats
-- `TaskController`: Handles CRUD, filtering, sorting, soft delete/restore for tasks
-- `CategoryController`: Handles CRUD for categories, prevents deletion/update if tasks exist
-- `ProfileController`: Manages user profile and account deletion
-
-### Migrations
-- `create_users_table`: User accounts
-- `create_categories_table`: Categories with name, color, icon
-- `create_tasks_table`: Tasks with title, description, status, due date, soft deletes
-
-### Views
-- `dashboard.blade.php`: Dashboard stats
-- `pages/tasks.blade.php`: Task list, filters, modals for add/edit/delete/restore
-- `pages/categories.blade.php`: Category list, modals for add/edit/delete
-
-### Routes
-- Defined in `routes/web.php`:
-  - `/dashboard`: Dashboard
-  - `/tasks`: Task CRUD, restore, force delete
-  - `/categories`: Category CRUD
-  - `/profile`: Profile management
-
----
-
-## Testing
-- Uses PHPUnit and Pest for testing
-- Test suites in `tests/Unit` and `tests/Feature`
-- Run tests:
-  ```bash
-  php artisan test
-  ```
-
----
-
-## Contributing
-Contributions are welcome! Please follow Laravel's [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct) and [contribution guide](https://laravel.com/docs/contributions).
-
----
-
-## License
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This repository is **continuously updated** as new videos are released. **Star this repo** ⭐ to stay updated! 🚀  
