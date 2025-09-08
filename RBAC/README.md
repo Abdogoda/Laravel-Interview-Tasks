@@ -5,6 +5,12 @@ Welcome to the **User Management and Role-Based Access Control (RBAC)** document
 
 ---
 
+## 📋 Task Requirements
+
+For detailed requirements and evaluation criteria, see [TaskRequirements.md](./TaskRequirements.pdf).
+
+---
+
 ## 🧩 Features
 - **User Authentication**: Login, registration, and password reset functionality.
 - **Role Management**: Create, update, and assign roles to users.

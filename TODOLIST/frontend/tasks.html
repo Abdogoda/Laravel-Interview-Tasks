@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html class="h-full bg-gray-900">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tasks - Todo List</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Toastr -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+      toastr.options = {
+        closeButton: false,
+        debug: false,
+        newestOnTop: false,
+        progressBar: false,
+        positionClass: "toast-top-right",
+        preventDuplicates: false,
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "5000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut",
+      };
+    </script>
+
+    <style>
+      .animate-fadeIn {
+        animation: fadeIn 0.8s ease-in;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .animate-modal {
+        animation: modalIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      @keyframes modalIn {
+        from {
+          transform: scale(0.95);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="h-full">
+    <div class="min-h-full">
+      <nav class="bg-gray-800/50">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="flex h-16 items-center justify-between">
+            <div class="flex items-center">
+              <div class="shrink-0">
+                <img
+                  src="https://img.icons8.com/fluency/32/000000/todo-list.png"
+                  alt="Logo"
+                  class="size-8"
+                />
+              </div>
+              <span class="ml-3 text-xl font-semibold text-white tracking-tight"
+                >Todo List</span
+              >
+              <div class="hidden md:block">
+                <div class="ml-10 flex items-baseline space-x-4">
+                  <!-- Current: "bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
+                  <a
+                    href="#"
+                    aria-current="page"
+                    class="rounded-md bg-gray-950/50 px-3 py-2 text-sm font-medium text-white"
+                    >Tasks</a
+                  >
+                  <a
+                    href="categories.html"
+                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white"
+                    >Categories</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="hidden md:block">
+              <div class="ml-4 flex items-center md:ml-6">
+                <div class="relative ml-3">
+                  <button
+                    id="profileDropdownBtn"
+                    class="relative flex max-w-xs items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                  >
+                    <span class="absolute -inset-1.5"></span>
+                    <span class="sr-only">Open user menu</span>
+                    <img
+                      src="https://img.icons8.com/ios-filled/50/ffffff/user-male-circle.png"
+                      alt="Unknown User"
+                      class="size-8 rounded-full outline -outline-offset-1 outline-white/10"
+                    />
+                  </button>
+                  <div
+                    id="profileDropdownMenu"
+                    class="w-48 origin-top-right rounded-md bg-gray-800 py-1 outline-1 -outline-offset-1 outline-white/10 absolute right-0 mt-2 hidden z-50"
+                  >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5"
+                      >Your profile</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-red-300 hover:bg-red-500/80 hover:text-white"
+                      >Sign out</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="-mr-2 flex md:hidden">
+              <!-- Mobile menu button -->
+              <button
+                id="mobileMenuBtn"
+                type="button"
+                class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500"
+              >
+                <span class="absolute -inset-0.5"></span>
+                <span class="sr-only">Open main menu</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  aria-hidden="true"
+                  class="size-6"
+                >
+                  <path
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="mobileMenu" class="block md:hidden hidden">
+          <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
+            <!-- Current: "bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
+            <a
+              href="tasks.html"
+              aria-current="page"
+              class="block rounded-md bg-gray-950/50 px-3 py-2 text-base font-medium text-white"
+              >Tasks</a
+            >
+            <a
+              href="categories.html"
+              class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white"
+              >Categories</a
+            >
+          </div>
+          <div class="border-t border-white/10 pt-4 pb-3">
+            <div class="flex items-center px-5">
+              <div class="shrink-0">
+                <img
+                  src="https://img.icons8.com/ios-filled/50/ffffff/user-male-circle.png"
+                  alt="Unknown User"
+                  class="size-10 rounded-full outline -outline-offset-1 outline-white/10"
+                />
+              </div>
+              <div class="ml-3">
+                <div class="text-base/5 font-medium text-white">Tom Cook</div>
+                <div class="text-sm font-medium text-gray-400">
+                  tom@example.com
+                </div>
+              </div>
+            </div>
+            <div class="mt-3 space-y-1 px-2">
+              <a
+                href="#"
+                class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-white/5 hover:text-white"
+                >Your profile</a
+              >
+              <a
+                href="#"
+                class="block rounded-md px-3 py-2 text-base font-medium text-red-400 hover:bg-red-500 hover:text-white"
+                >Sign out</a
+              >
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <header
+        class="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:inset-y-0 after:border-y after:border-white/10"
+      >
+        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold tracking-tight text-white">Tasks</h1>
+            <button
+              class="px-6 py-2 bg-indigo-600 text-white rounded-xl shadow-lg hover:bg-indigo-700 transition font-semibold"
+              onclick="openModal('addTaskModal')"
+            >
+              + Add Task
+            </button>
+          </div>
+        </div>
+      </header>
+      <main>
+        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <div class="flex flex-wrap gap-4 mb-4 items-center justify-between">
+            <form
+              action=""
+              method="get"
+              class="w-full flex flex-wrap gap-4 items-center justify-between bg-gray-900/80 rounded-2xl shadow-lg px-6 py-4 border border-gray-800"
+            >
+              <div class="relative">
+                <select
+                  name="status"
+                  class="pl-10 pr-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                >
+                  <option value="all">Status: All</option>
+                  <option value="completed">Completed</option>
+                  <option value="pending">Pending</option>
+                  <option value="overdue">Overdue</option>
+                </select>
+                <span class="absolute left-3 top-2.5 text-indigo-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div class="relative">
+                <select
+                  name="category"
+                  class="pl-10 pr-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                >
+                  <option value="all">Category: All</option>
+                  <option value="work">Work</option>
+                  <option value="personal">Personal</option>
+                  <option value="shopping">Shopping</option>
+                </select>
+                <span class="absolute left-3 top-2.5 text-indigo-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 12h8"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div class="relative">
+                <select
+                  name="sort"
+                  class="pl-10 pr-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                >
+                  <option value="">Sort by...</option>
+                  <option value="due_asc">Due Date ↑</option>
+                  <option value="due_desc">Due Date ↓</option>
+                  <option value="status_asc">Status ↑</option>
+                  <option value="status_desc">Status ↓</option>
+                </select>
+                <span class="absolute left-3 top-2.5 text-indigo-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 6h16M4 12h8m-8 6h16"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <label
+                class="inline-flex items-center cursor-pointer select-none"
+              >
+                <input
+                  type="checkbox"
+                  id="trashedCheckbox"
+                  name="trashed"
+                  class="peer sr-only"
+                />
+                <span
+                  class="px-4 py-2 rounded-xl border-2 font-semibold shadow transition border-red-400 text-red-400 bg-transparent peer-checked:bg-red-900 peer-checked:text-white peer-checked:border-red-900"
+                >
+                  Show Trashed
+                </span>
+              </label>
+              <div class="relative flex-1 min-w-[180px]">
+                <input
+                  type="text"
+                  name="search"
+                  placeholder="Search tasks..."
+                  class="pl-10 pr-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
+                />
+                <span class="absolute left-3 top-2.5 text-indigo-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 21l-4.35-4.35M11 17a6 6 0 100-12 6 6 0 000 12z"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <button
+                type="submit"
+                class="px-4 py-2 rounded-xl bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 transition flex items-center gap-1"
+              >
+                Apply
+              </button>
+            </form>
+          </div>
+          <div class="bg-gray-800 shadow-lg overflow-x-auto">
+            <table class="min-w-full text-sm">
+              <thead>
+                <tr class="bg-gray-900">
+                  <th class="py-3 px-4 text-left font-semibold text-gray-300">
+                    Title
+                  </th>
+                  <th class="py-3 px-4 text-left font-semibold text-gray-300">
+                    Description
+                  </th>
+                  <th class="py-3 px-4 text-left font-semibold text-gray-300">
+                    Category
+                  </th>
+                  <th class="py-3 px-4 text-left font-semibold text-gray-300">
+                    Due Date
+                  </th>
+                  <th class="py-3 px-4 text-left font-semibold text-gray-300">
+                    Status
+                  </th>
+                  <th class="py-3 px-4 text-left font-semibold text-gray-300">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-gray-700">
+                  <td class="py-3 px-4 text-white">Finish project</td>
+                  <td class="py-3 px-4 truncate max-w-xs text-gray-400">
+                    Complete the frontend and backend for the todo list app.
+                  </td>
+                  <td class="py-3 px-4 text-white">Work</td>
+                  <td class="py-3 px-4 text-white">2025-09-10</td>
+                  <td class="py-3 px-4">
+                    <span
+                      class="px-3 py-1 rounded-xl bg-emerald-900 text-emerald-300 font-semibold"
+                      >Completed</span
+                    >
+                  </td>
+                  <td class="py-3 px-4 flex gap-2">
+                    <button
+                      class="px-3 py-1 bg-indigo-900 text-indigo-300 rounded-xl hover:bg-indigo-700 transition editTaskBtn"
+                      onclick="openModal('editTaskModal')"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      class="px-3 py-1 bg-red-900 text-red-300 rounded-xl hover:bg-red-700 transition deleteTaskBtn"
+                      onclick="openModal('deleteModal')"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+                <tr class="border-b border-gray-700">
+                  <td class="py-3 px-4 text-white">Buy groceries</td>
+                  <td class="py-3 px-4 truncate max-w-xs text-gray-400">
+                    Milk, eggs, bread, and fruits.
+                  </td>
+                  <td class="py-3 px-4 text-white">Shopping</td>
+                  <td class="py-3 px-4 text-white">2025-09-06</td>
+                  <td class="py-3 px-4">
+                    <span
+                      class="px-3 py-1 rounded-xl bg-yellow-900 text-yellow-300 font-semibold"
+                      >Pending</span
+                    >
+                  </td>
+                  <td class="py-3 px-4 flex gap-2">
+                    <button
+                      class="px-3 py-1 bg-indigo-900 text-indigo-300 rounded-xl hover:bg-indigo-700 transition editTaskBtn"
+                      onclick="openModal('editTaskModal')"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      class="px-3 py-1 bg-red-900 text-red-300 rounded-xl hover:bg-red-700 transition deleteTaskBtn"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4 text-white">Pay bills</td>
+                  <td class="py-3 px-4 truncate max-w-xs text-gray-400">
+                    Electricity and internet bills for September.
+                  </td>
+                  <td class="py-3 px-4 text-white">Personal</td>
+                  <td class="py-3 px-4 text-white">2025-09-05</td>
+                  <td class="py-3 px-4">
+                    <span
+                      class="px-3 py-1 rounded-xl bg-red-900 text-red-300 font-semibold"
+                      >Overdue</span
+                    >
+                  </td>
+                  <td class="py-3 px-4 flex gap-2">
+                    <button
+                      class="px-3 py-1 bg-indigo-900 text-indigo-300 rounded-xl hover:bg-indigo-700 transition editTaskBtn"
+                      onclick="openModal('editTaskModal')"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      class="px-3 py-1 bg-red-900 text-red-300 rounded-xl hover:bg-red-700 transition deleteTaskBtn"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="flex justify-end items-center gap-2 p-4">
+              <button
+                class="px-3 py-1 rounded-xl bg-gray-900 text-gray-400 hover:bg-gray-800 transition"
+              >
+                Prev
+              </button>
+              <span class="px-3 py-1 rounded-xl bg-gray-900 text-indigo-300"
+                >1</span
+              >
+              <button
+                class="px-3 py-1 rounded-xl bg-gray-900 text-gray-400 hover:bg-gray-800 transition"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Add Task Modal -->
+      <div
+        id="addTaskModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden"
+      >
+        <div
+          class="bg-gray-800 rounded-2xl shadow-xl p-8 animate-modal w-full max-w-md text-center"
+        >
+          <h3 class="text-xl font-bold text-indigo-400 mb-4">Add Task</h3>
+          <form class="space-y-4">
+            <div class="text-left">
+              <label
+                for="addTaskTitle"
+                class="block text-sm font-medium text-gray-300 mb-1"
+                >Title</label
+              >
+              <input
+                id="addTaskTitle"
+                type="text"
+                placeholder="Title"
+                class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              />
+            </div>
+            <div class="text-left">
+              <label
+                for="addTaskDesc"
+                class="block text-sm font-medium text-gray-300 mb-1"
+                >Description</label
+              >
+              <textarea
+                id="addTaskDesc"
+                placeholder="Description"
+                class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              ></textarea>
+            </div>
+            <div class="text-left">
+              <label
+                for="addTaskCategory"
+                class="block text-sm font-medium text-gray-300 mb-1"
+                >Category</label
+              >
+              <select
+                id="addTaskCategory"
+                class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              >
+                <option>Work</option>
+                <option>Personal</option>
+                <option>Shopping</option>
+              </select>
+            </div>
+            <div class="text-left">
+              <label
+                for="addTaskStatus"
+                class="block text-sm font-medium text-gray-300 mb-1"
+                >Status</label
+              >
+              <select
+                id="addTaskStatus"
+                class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              >
+                <option>Completed</option>
+                <option>Pending</option>
+                <option>Overdue</option>
+              </select>
+            </div>
+            <div class="text-left">
+              <label
+                for="addTaskDue"
+                class="block text-sm font-medium text-gray-300 mb-1"
+                >Due Date</label
+              >
+              <input
+                id="addTaskDue"
+                type="date"
+                class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              />
+            </div>
+            <div class="flex gap-2 justify-center">
+              <button
+                type="submit"
+                class="px-6 py-2 bg-emerald-600 text-white rounded-xl shadow-lg hover:bg-emerald-700 transition font-semibold"
+                onclick="toastr.success('Task added successfully!'); closeModal('addTaskModal')"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                class="px-6 py-2 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-600 transition font-semibold"
+                onclick="closeModal('addTaskModal')"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Edit Task Modal -->
+      <div
+        id="editTaskModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden"
+      >
+        <div
+          class="bg-gray-800 rounded-2xl shadow-xl p-8 animate-modal w-full max-w-md text-center"
+        >
+          <h3 class="text-xl font-bold text-indigo-400 mb-4">Edit Task</h3>
+          <form class="space-y-4">
+            <div class="text-left">
+              <label
+                for="editTaskTitle"
+                class="block text-sm font-medium text-gray-300 mb-1"
+                >Title</label
+              >
+              <input
+                id="editTaskTitle"
+                type="text"
+                placeholder="Title"
+                class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              />
+            </div>
+            <div class="text-left">
+              <label
+                for="editTaskDesc"
+                class="block text-sm font-medium text-gray-300 mb-1"
+                >Description</label
+              >
+              <textarea
+                id="editTaskDesc"
+                placeholder="Description"
+                class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              ></textarea>
+            </div>
+            <div class="text-left">
+              <label
+                for="editTaskCategory"
+                class="block text-sm font-medium text-gray-300 mb-1"
+                >Category</label
+              >
+              <select
+                id="editTaskCategory"
+                class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              >
+                <option>Work</option>
+                <option>Personal</option>
+                <option>Shopping</option>
+              </select>
+            </div>
+            <div class="text-left">
+              <label
+                for="editTaskStatus"
+                class="block text-sm font-medium text-gray-300 mb-1"
+                >Status</label
+              >
+              <select
+                id="editTaskStatus"
+                class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              >
+                <option>Completed</option>
+                <option>Pending</option>
+                <option>Overdue</option>
+              </select>
+            </div>
+            <div class="text-left">
+              <label
+                for="editTaskDue"
+                class="block text-sm font-medium text-gray-300 mb-1"
+                >Due Date</label
+              >
+              <input
+                id="editTaskDue"
+                type="date"
+                class="w-full px-4 py-2 rounded-xl border border-gray-700 bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              />
+            </div>
+            <div class="flex gap-2 justify-center">
+              <button
+                type="submit"
+                class="px-6 py-2 bg-emerald-600 text-white rounded-xl shadow-lg hover:bg-emerald-700 transition font-semibold"
+                onclick="toastr.success('Task updated successfully!'); closeModal('editTaskModal')"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                class="px-6 py-2 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-600 transition font-semibold"
+                onclick="closeModal('editTaskModal')"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Delete Modal -->
+      <div
+        id="deleteModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden"
+      >
+        <div
+          class="bg-gray-800 rounded-2xl shadow-xl p-8 animate-modal w-full max-w-sm text-center"
+        >
+          <h3 class="text-xl font-bold text-red-400 mb-4">Delete Task?</h3>
+          <p class="text-gray-300 mb-6">
+            Are you sure you want to delete this task?
+          </p>
+          <div class="flex gap-2 justify-center">
+            <button
+              class="px-6 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition font-semibold"
+              onclick="toastr.success('Task deleted successfully!'); closeModal('deleteModal')"
+            >
+              Delete
+            </button>
+            <button
+              class="px-6 py-2 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-600 transition font-semibold"
+              onclick="closeModal('deleteModal')"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Dropdown logic
+      const dropdownBtn = document.getElementById("profileDropdownBtn");
+      const dropdownMenu = document.getElementById("profileDropdownMenu");
+      dropdownBtn.onclick = function (e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle("hidden");
+      };
+      document.addEventListener("click", function (e) {
+        if (!dropdownMenu.classList.contains("hidden")) {
+          if (!dropdownMenu.contains(e.target) && e.target !== dropdownBtn) {
+            dropdownMenu.classList.add("hidden");
+          }
+        }
+      });
+      // Mobile menu logic
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      mobileMenuBtn.onclick = function (e) {
+        e.stopPropagation();
+        mobileMenu.classList.toggle("hidden");
+      };
+      document.addEventListener("click", function (e) {
+        if (!mobileMenu.classList.contains("hidden")) {
+          if (!mobileMenu.contains(e.target) && e.target !== mobileMenuBtn) {
+            mobileMenu.classList.add("hidden");
+          }
+        }
+      });
+
+      // Modal utility functions
+      function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.remove("hidden");
+      }
+      function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.add("hidden");
+      }
+    </script>
+  </body>
+</html>
