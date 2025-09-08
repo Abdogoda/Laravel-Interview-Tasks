@@ -26,10 +26,12 @@ Each video corresponds to one task in this repo, explaining:
 
 ---
 
-## 📂 Folder Structure
+## 📂 Repo Content
 
-- [RBAC/](./RBAC/) — Role-Based Access Control task  
-- [TODOLIST/](./TODOLIST/) — To-Do List task  
+- [RBAC](./RBAC/) — Role-Based Access Control task  
+- [TODOLIST](./TODOLIST/) — To-Do List task  
+
+- This README file, providing an overview and usage instructions for the repository  
 
 ---
 
