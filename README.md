@@ -28,13 +28,8 @@ Each video corresponds to one task in this repo, explaining:
 
 ## 📂 Folder Structure
 
-```plaintext
-laravel-interview-tasks/
-│
-├── [RBAC/](RBAC/)                # The first task folder  
-├── [TODOLIST/](TODOLIST/)        # The second task folder  
-└── README.md            # This documentation file
-```
+- [RBAC/](./RBAC/) — Role-Based Access Control task  
+- [TODOLIST/](./TODOLIST/) — To-Do List task  
 
 ---
 
