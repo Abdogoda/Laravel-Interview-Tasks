@@ -10,6 +10,13 @@ For detailed requirements and evaluation criteria, see [TaskRequirements.md](./T
 
 > **Note:** The [`frontend`](./frontend) folder contains only HTML pages to be used for the task UI. You can use these as static templates or integrate them into your Laravel views as needed.
 
+---
+
+
+## 🎥 YouTube Video Tutorial
+
+You can watch the full video explanation of this project on YouTube here:
+👉 Watch the [TODOLIST Task Video](https://youtu.be/dwOZF8pBBRg) on YouTube
 
 ---
 
