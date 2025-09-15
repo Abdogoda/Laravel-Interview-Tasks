@@ -1,5 +1,7 @@
 # 📦 Laravel Interview Tasks
 
+<img width="1280" height="720" alt="1" src="https://github.com/user-attachments/assets/6700f078-4609-4a58-9361-4096701e1175" />
+
 Welcome to the **Laravel Interview Tasks** repository! 🚀  
 
 This is a curated collection of **real-world Laravel coding tasks** often seen in technical interviews, coding assessments, and onboarding challenges.  
