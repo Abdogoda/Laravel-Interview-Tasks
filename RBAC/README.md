@@ -11,6 +11,13 @@ For detailed requirements and evaluation criteria, see [TaskRequirements.md](./T
 
 ---
 
+## 🎥 YouTube Video Tutorial
+
+You can watch the full video explanation of this project on YouTube here:
+👉 Watch the [RBAC Task Video](https://youtu.be/D3jbaOZee7c?si=02UzDMmEigrlFy5) on YouTube
+
+---
+
 ## 🧩 Features
 - **User Authentication**: Login, registration, and password reset functionality.
 - **Role Management**: Create, update, and assign roles to users.
