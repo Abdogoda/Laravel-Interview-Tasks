@@ -1,5 +1,7 @@
 # ✅ Todo List & Category Management
 
+<img width="1280" height="720" alt="2_TodoList" src="https://github.com/user-attachments/assets/a549c80e-3000-42df-a452-39e09e7e3a3c" />
+
 Welcome to the **Todo List & Category Management** documentation! This guide covers the features, routes, setup, and code structure for this Laravel application, following a modern, user-friendly approach.
 
 ---
