@@ -1,5 +1,7 @@
 # ✅ Todo List & Category Management
 
+<img width="1280" height="720" alt="2_TodoList" src="https://github.com/user-attachments/assets/a549c80e-3000-42df-a452-39e09e7e3a3c" />
+
 Welcome to the **Todo List & Category Management** documentation! This guide covers the features, routes, setup, and code structure for this Laravel application, following a modern, user-friendly approach.
 
 ---
@@ -10,6 +12,13 @@ For detailed requirements and evaluation criteria, see [TaskRequirements.md](./T
 
 > **Note:** The [`frontend`](./frontend) folder contains only HTML pages to be used for the task UI. You can use these as static templates or integrate them into your Laravel views as needed.
 
+---
+
+
+## 🎥 YouTube Video Tutorial
+
+You can watch the full video explanation of this project on YouTube here:
+👉 Watch the [TODOLIST Task Video](https://youtu.be/dwOZF8pBBRg) on YouTube
 
 ---
 

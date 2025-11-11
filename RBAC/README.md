@@ -1,5 +1,6 @@
-
 # 🧑‍💻 User Management and Role-Based Access Control (RBAC)
+
+<img width="1280" height="720" alt="1_RBAC" src="https://github.com/user-attachments/assets/3661acf8-00c1-4dc1-99c5-8deb4d8b7634" />
 
 Welcome to the **User Management and Role-Based Access Control (RBAC)** documentation! This guide will walk you through the implementation of RBAC in this Laravel application with code examples from routes, controllers, middleware, models, migrations, and tests.
 
@@ -8,6 +9,13 @@ Welcome to the **User Management and Role-Based Access Control (RBAC)** document
 ## 📋 Task Requirements
 
 For detailed requirements and evaluation criteria, see [TaskRequirements.md](./TaskRequirements.pdf).
+
+---
+
+## 🎥 YouTube Video Tutorial
+
+You can watch the full video explanation of this project on YouTube here:
+👉 Watch the [RBAC Task Video](https://youtu.be/D3jbaOZee7c?si=02UzDMmEigrlFy5) on YouTube
 
 ---
 
