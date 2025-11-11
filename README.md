@@ -111,5 +111,8 @@ The repo is designed to help you learn Laravel concepts quickly
 
 💬 For questions, suggestions, or collaborations:
 
-- **Email:** abdogoda0a@gmail.com
-- **YouTube Channel:** [Abdulrhman-Goda](https://www.youtube.com/@Abdulrhman-Goda)
+- **Gmail:** [abdogoda0a@gmail.com](mailto:abdogoda0a@gmail.com)
+- **GitHub:** [@Abdogoda](https://github.com/Abdogoda)
+- **YouTube:** [@Abdulrhman-Goda](https://www.youtube.com/@Abdulrhman-Goda)
+
+This repository is **continuously updated** as new videos are released. **Star this repo** ⭐ to stay updated! 🚀
