@@ -103,8 +103,6 @@ By exploring and working through these tasks, you will:
 
 Each task is independent — no shared code between tasks
 
-The repo is designed to help you learn Laravel concepts quickly
-
 ---
 
 ## 📧 Contact
