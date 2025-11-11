@@ -109,8 +109,6 @@ The repo is designed to help you learn Laravel concepts quickly
 
 ## 📧 Contact
 
-💬 For questions, suggestions, or collaborations:
-
 - **Gmail:** [abdogoda0a@gmail.com](mailto:abdogoda0a@gmail.com)
 - **GitHub:** [@Abdogoda](https://github.com/Abdogoda)
 - **YouTube:** [@Abdulrhman-Goda](https://www.youtube.com/@Abdulrhman-Goda)
