@@ -2,12 +2,13 @@
 
 <img width="1280" height="720" alt="1" src="https://github.com/user-attachments/assets/6700f078-4609-4a58-9361-4096701e1175" />
 
-Welcome to the **Laravel Interview Tasks** repository! 🚀  
+Welcome to the **Laravel Interview Tasks** repository! 🚀
 
 This is a curated collection of **real-world Laravel coding tasks** often seen in technical interviews, coding assessments, and onboarding challenges.  
-Each task is implemented inside its **own folder** and is **self-contained**, meaning you can work on any one task without setting up the entire repository.  
+Each task is implemented inside its **own folder** and is **self-contained**, meaning you can work on any one task without setting up the entire repository.
 
 The goal of this repository is to:
+
 - 🎯 Help Laravel developers **prepare for job interviews** by practicing realistic challenges
 - 🏗 Provide **ready-to-run mini-projects** for learning and reference
 - 💡 Demonstrate **best practices** in structuring Laravel projects
@@ -22,6 +23,7 @@ Whether you are a **beginner** trying to understand Laravel’s core features or
 [📌 Laravel Interview Tasks Playlist](https://www.youtube.com/playlist?list=PLBy71Vfd0SzV1UmzAJNiZ_rTj5NwUuPdo)
 
 Each video corresponds to one task in this repo, explaining:
+
 - Task requirements
 - Step-by-step implementation
 - Testing & demonstration
@@ -30,27 +32,27 @@ Each video corresponds to one task in this repo, explaining:
 
 ## 📂 Repo Content
 
-- [RBAC](./RBAC/)           — Role-Based Access Control task  
-- [TODOLIST](./TODOLIST/)   — To-Do List task  
+- [RBAC](./RBAC/) — Role-Based Access Control task
+- [TODOLIST](./TODOLIST/) — To-Do List task
+- [EMPLOYEE-WORKSPACE](./EMPLOYEE-WORKSPACE/) — Employee Workspace task
 
 ---
 
 📋 How to Use This Repo
 
-Step	Action
+Step Action
 
-1️⃣	Clone this repository
+1️⃣ Clone this repository
 
-2️⃣	Navigate to the task folder you want to run
+2️⃣ Navigate to the task folder you want to run
 
-3️⃣	Install dependencies with composer install
+3️⃣ Install dependencies with composer install
 
-4️⃣	Copy '.env.example' to '.env' and configure your database
+4️⃣ Copy '.env.example' to '.env' and configure your database
 
-5️⃣	Run migrations with `php artisan migrate --seed`
+5️⃣ Run migrations with `php artisan migrate --seed`
 
-6️⃣	Start the Laravel server with `php artisan serve`
-
+6️⃣ Start the Laravel server with `php artisan serve`
 
 Example:
 
@@ -63,7 +65,6 @@ php artisan migrate --seed
 php artisan serve
 ```
 
-
 ---
 
 🛠 Requirements
@@ -75,7 +76,6 @@ Composer
 MySQL or another Laravel-supported database
 
 Node.js (optional, if a task has frontend assets)
-
 
 ---
 
@@ -97,7 +97,6 @@ By exploring and working through these tasks, you will:
 
 📝 Learn best practices for clean code, reusable components, and database design
 
-
 ---
 
 📌 Notes
@@ -110,6 +109,7 @@ The repo is designed to help you learn Laravel concepts quickly
 
 ## 📧 Contact
 
-💬 For questions, suggestions, or collaborations:  
-- **Email:** abdogoda0a@gmail.com 
-- **YouTube Channel:** [Abdulrhman-Goda](https://www.youtube.com/@Abdulrhman-Goda)  
+💬 For questions, suggestions, or collaborations:
+
+- **Email:** abdogoda0a@gmail.com
+- **YouTube Channel:** [Abdulrhman-Goda](https://www.youtube.com/@Abdulrhman-Goda)
